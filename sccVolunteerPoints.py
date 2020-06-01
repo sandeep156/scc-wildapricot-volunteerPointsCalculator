@@ -7,6 +7,7 @@ import numpy as np
 import itertools
 import os, sys
 from fnmatch import fnmatch
+import tkinter.font as tkFont
 
 class TkFileDialogExample(tk.Frame):
 
@@ -15,18 +16,21 @@ class TkFileDialogExample(tk.Frame):
     tk.Frame.__init__(self, root)
 
     #define widgets
+    fontStyle = tkFont.Font(family="Lucida Grande", size=14)
+    titleFontStyle = tkFont.Font(family="Lucida Grande", size=20)
     
-    tk.Label(self, text = 'READ THIS FIRST!!!!!!!').grid(row = 0, column = 0, columnspan = 2)
-    tk.Label(self, text = 'Fill ride lengths.Fill 0 if N/A').grid(row = 1, column = 0, columnspan = 2)
-    tk.Label(self, text = "Click 'RUN' button").grid(row = 2, column = 0, columnspan = 2)
-    tk.Label(self, text = 'Select riders csv file').grid(row = 3, column = 0, columnspan = 2)
-    tk.Label(self, text = 'Select contacts csv file').grid(row = 4, column = 0, columnspan = 2)
-    tk.Label(self, text = 'If NO ERRORS, output.csv generated').grid(row = 5, column = 0, columnspan = 2)
-    tk.Label(self, text = 'If ERRORS, follow pop up instructions').grid(row = 6, column = 0, columnspan = 2)
+    tk.Label(self, text = 'READ THIS FIRST!!!!!!!', font = titleFontStyle).grid(row = 0, column = 0, columnspan = 2)
+    tk.Label(self, text = 'Type in any new volunteer positions in the box at the bottom', font = fontStyle).grid(row = 1, column = 0, columnspan = 2)
+    tk.Label(self, text = "Format is [VolunteerPosition], [Points];", font = fontStyle).grid(row = 2, column = 0, columnspan = 2)
+    tk.Label(self, text = 'Must use comma between name and points.', font = fontStyle).grid(row = 3, column = 0, columnspan = 2)
+    tk.Label(self, text = 'Must use semicolon after points', font = fontStyle).grid(row = 4, column = 0, columnspan = 2)
+    tk.Label(self, text = 'Example: Treasurer,5; Vice President,10; ', font = fontStyle).grid(row = 5, column = 0, columnspan = 2)
+    tk.Label(self, text = 'Click RUN and select requested csv files',font = fontStyle).grid(row = 6, column = 0, columnspan = 2)
     
-    tk.Label(self, text = "Additional Volunteer Positions").grid(row = 7, column = 0)
+    tk.Label(self, text = "", font = fontStyle).grid(row = 7, column = 0)
+    tk.Label(self, text = "Fill Additional Volunteer Positions Below (if none, leave empty):", font = fontStyle).grid(row = 8, column = 0)
     self.AdditionalVolunteerEntry = tk.StringVar()
-    tk.Entry(self, textvariable = self.AdditionalVolunteerEntry).grid(row = 8, column = 0, columnspan = 2 ,rowspan = 4, sticky = 'nesw')
+    tk.Entry(self, textvariable = self.AdditionalVolunteerEntry).grid(row = 9, column = 0, columnspan = 2 ,rowspan = 3, sticky = 'nesw')
     
     tk.Button(self, text='RUN', command=self.askopenfilename).grid(row = 12, column = 1, columnspan = 2)
 
@@ -63,10 +67,11 @@ class TkFileDialogExample(tk.Frame):
     """
     
     #self.VolunteerPointsDict("Rider - Very Short").value = int(self.AdditionalVolunteerEntry.get())
+    parseVolunteerEntryIsGood = True
     if(len(self.AdditionalVolunteerEntry.get()) != 0):
-       status = self.parseAdditionalVolunteers(self.AdditionalVolunteerEntry.get())
+       parseVolunteerEntryIsGood = self.parseAdditionalVolunteers(self.AdditionalVolunteerEntry.get())
        
-    if (status == False):
+    if (parseVolunteerEntryIsGood == False):
         return
 
     #get filename
@@ -131,7 +136,7 @@ class TkFileDialogExample(tk.Frame):
         
         for registrationTypeIndex, registrationValue in enumerate (tempRegistrationTypeList):
             for key in self.VolunteerPointsDict:
-                print (key)
+                #print (key)
                 if key in registrationValue:
                     self.VolunteerIds.append(self.EventCompleteUserIdList[registrationTypeIndex])
                     self.VolunteerPoints.append((self.VolunteerPointsDict[key]))
@@ -248,21 +253,21 @@ class TkFileDialogExample(tk.Frame):
             newPositionPointsList.append(int(str.strip(stringInput[startIndex:index])))
             startIndex = index + 1
             
-    print ("Comma location list" + str(len(commaLocationList)))
-    print ("Semi location list" + str(len(semiColonLocationList)))
-    print (newPositionNameList)
-    print (newPositionPointsList)
+    #print ("Comma location list" + str(len(commaLocationList)))
+    #print ("Semi location list" + str(len(semiColonLocationList)))
+    #print (newPositionNameList)
+    #print (newPositionPointsList)
     
     #error if we don't have the same number of comma and semicolon
     if len(commaLocationList) != len(semiColonLocationList):
-        print ("ERROR COMMA not equal SEMICOLON")
+        #print ("ERROR COMMA not equal SEMICOLON")
         self.popupmsg("ERROR: Check additional volunteer input format (note the comma and semicolon). It should be volunteerPostionName, Points ; eg. Treasurer, 5;")
         return False
     
     for positionIndex, positionName in enumerate(newPositionNameList):
         updateVal = {positionName: newPositionPointsList[positionIndex]}
         self.VolunteerPointsDict.update(updateVal)
-        print (self.VolunteerPointsDict)
+        #print (self.VolunteerPointsDict)
 
 if __name__=='__main__':
   root = tk.Tk()
