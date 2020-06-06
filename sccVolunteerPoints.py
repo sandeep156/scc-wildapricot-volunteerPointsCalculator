@@ -66,8 +66,11 @@ class TkFileDialogExample(tk.Frame):
     This time the dialog just returns a filename and the file is opened by your own code.
     """
     
-    #self.VolunteerPointsDict("Rider - Very Short").value = int(self.AdditionalVolunteerEntry.get())
     parseVolunteerEntryIsGood = True
+    self.VolunteerPointsDictInUse = dict()
+    #print (self.VolunteerPointsDictInUse)
+    self.VolunteerPointsDictInUse = self.VolunteerPointsDict
+    
     if(len(self.AdditionalVolunteerEntry.get()) != 0):
        parseVolunteerEntryIsGood = self.parseAdditionalVolunteers(self.AdditionalVolunteerEntry.get())
        
@@ -136,11 +139,11 @@ class TkFileDialogExample(tk.Frame):
         self.EventCompleteUserIdList = dfs['User ID'].tolist()
         
         for registrationTypeIndex, registrationValue in enumerate (tempRegistrationTypeList):
-            for key in self.VolunteerPointsDict:
+            for key in self.VolunteerPointsDictInUse:
                 #print (key)
                 if key in registrationValue:
                     self.VolunteerIds.append(self.EventCompleteUserIdList[registrationTypeIndex])
-                    self.VolunteerPoints.append((self.VolunteerPointsDict[key]))
+                    self.VolunteerPoints.append((self.VolunteerPointsDictInUse[key]))
                     #print (registrationTypeIndex)
 
 
@@ -267,8 +270,9 @@ class TkFileDialogExample(tk.Frame):
     
     for positionIndex, positionName in enumerate(newPositionNameList):
         updateVal = {positionName: newPositionPointsList[positionIndex]}
-        self.VolunteerPointsDict.update(updateVal)
+        self.VolunteerPointsDictInUse.update(updateVal)
         #print (self.VolunteerPointsDict)
+    #print (self.VolunteerPointsDictInUse)
 
 if __name__=='__main__':
   root = tk.Tk()
