@@ -104,7 +104,7 @@ class TkFileDialogExample(tk.Frame):
   EventCompleteUserIdList = []
   
   VolunteerPointsDict = {
-    "No-Drop Leader"        : 2, # Not updated
+    "No Drop"        : 2, # Not updated
     "Food Purchaser"        : 1,
     "Officer in Charge"     : 3,
     "Registration Host"     : 5, # Not updated
@@ -181,13 +181,13 @@ class TkFileDialogExample(tk.Frame):
         #print 'TotalVolunteerPointsList before' + str(TotalVolunteerPointsList)
         TotalVolunteerPointsList[indexToUpdate] = TotalVolunteerPointsList[indexToUpdate] + self.VolunteerPoints[userIdIndex]
         
-        processedDf = pd.DataFrame()
-        processedDf['User ID'] = ContactsUserIDList
-        processedDf['Volunteer Points'] = TotalVolunteerPointsList
-        processedDf['Membership level'] = MembershipLevelList
-        processedDf.to_csv('volunteerPointsOutput.csv', sep=',')
-        print ("Output File Generated")
-        self.popupmsgOutputGenerated()
+    processedDf = pd.DataFrame()
+    processedDf['User ID'] = ContactsUserIDList
+    processedDf['Volunteer Points'] = TotalVolunteerPointsList
+    processedDf['Membership level'] = MembershipLevelList
+    processedDf.to_csv('volunteerPointsOutput.csv', sep=',')
+    #print ("Output File Generated")
+    self.popupmsgOutputGenerated()
 
 
   ListOfDuplicatesFullName = []
@@ -214,26 +214,32 @@ class TkFileDialogExample(tk.Frame):
     for fullNames in self.ListOfDuplicatesFullName:
         fullMsgString = fullMsgString + fullNames + ", "
     self.popupmsg(fullMsgString)
-        
+            
   def popupmsg(self, msg):
-    popup = tk.Tk()
+    # to make pop up appear above main window
+    popup = tk.Toplevel()
     popup.wm_title("!")
+    # to make pop up the focus
+    popup.grab_set()
     label = tk.Label(popup, text= "")
     label.pack(side="top", fill="x", pady=10)
     label = tk.Label(popup, text= msg)
     label.pack(side="top", fill="x", pady=10)
     B1 = tk.Button(popup, text="Okay", command = popup.destroy)
     B1.pack()
-    popup.mainloop()
+    #popup.mainloop()
     
   def popupmsgOutputGenerated(self):
-    popup = tk.Tk()
+    # to make pop up appear above main window
+    popup = tk.Toplevel()
     popup.wm_title("!")
+    # to make pop up the focus
+    popup.grab_set()
     label = tk.Label(popup, text= "Output file generated in the same folder as your input files")
     label.pack(side="top", fill="x", pady=10)
     B1 = tk.Button(popup, text="Okay", command = popup.destroy)
     B1.pack()
-    popup.mainloop()
+    #popup.mainloop()
     
   def parseAdditionalVolunteers(self, stringInput):
     foundCommaCount = 0
@@ -277,7 +283,5 @@ class TkFileDialogExample(tk.Frame):
 if __name__=='__main__':
   root = tk.Tk()
   root.title("Volunteer Points")
-  #TkFileDialogExample(root).pack()
-  #root.mainloop()
   TkFileDialogExample(root).grid(row = 0, column = 0)
   root.mainloop()
