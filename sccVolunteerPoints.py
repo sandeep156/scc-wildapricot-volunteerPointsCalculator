@@ -104,13 +104,14 @@ class TkFileDialogExample(tk.Frame):
   EventCompleteUserIdList = []
   
   VolunteerPointsDict = {
-    "No Drop"        : 2, # Not updated
+    "No Drop"               : 1,
     "Food Purchaser"        : 1,
     "Officer in Charge"     : 3,
-    "Registration Host"     : 5, # Not updated
-    "Lead SAG"              : 6, # Not updated
-    "Volunteer - SAG"       : 3,
+    "Registration Host"     : 1,
+    "Lead SAG"              : 3,
+    "Volunteer - SAG"       : 2,
     "Rest Stop Host"        : 2,
+    "Equipment"             : 4,
     }  
 
 
