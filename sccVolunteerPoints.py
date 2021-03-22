@@ -108,8 +108,8 @@ class TkFileDialogExample(tk.Frame):
     "Food Purchaser"        : 1,
     "Officer in Charge"     : 3,
     "Registration Host"     : 1,
-    "Lead SAG"              : 3,
-    "Volunteer - SAG"       : 2,
+    "Lead SAG"              : 4,
+    "Volunteer - SAG"       : 3,
     "Rest Stop Host"        : 2,
     "Equipment"             : 4,
     }  
@@ -117,6 +117,7 @@ class TkFileDialogExample(tk.Frame):
 
   def volunteerFileStuff (self, volunteerFilename):
     dfs = pd.read_csv(volunteerFilename)
+    #dfs.replace('', 0, inplace = True)
     dfs.columns = dfs.columns.str.strip()
     
     tempRegistrationTypeList = []
@@ -170,6 +171,7 @@ class TkFileDialogExample(tk.Frame):
   def contactFileStuff (self, contactFileName):
     df = pd.read_csv(contactFileName)
     df.columns = df.columns.str.strip()
+    #df.replace('', 0, inplace = True)
     
     ContactsUserIDList = df[self.ContactsFileHeaderNames[0]].tolist()
     TotalVolunteerPointsList = df[self.ContactsFileHeaderNames[1]].tolist()
